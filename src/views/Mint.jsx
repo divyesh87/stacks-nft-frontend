@@ -9,8 +9,9 @@ import Select from "react-select"
 import UploadWidget from '../components/UploadWidget'
 import { pinFileToIPFS } from "../helpers/mintEssentials.js"
 import { toastInfo, toastSuccess, toastError } from "../helpers/Toast"
-
-
+import { openContractCall } from "@stacks/connect"
+import { standardPrincipalCV, stringAsciiCV } from "@stacks/transactions";
+import config from "../stx/config.json"
 
 const OPTIONS = [
   { value: "img", label: "Standard Image Metadata" },
@@ -66,8 +67,24 @@ function Mint() {
   }
 
   async function mint(hash) {
-    if (!hash) return
-    
+    if (!hash) return;
+
+    const options = {
+      contractAddress: config.nftContract.address,
+      contractName: config.nftContract.name,
+      functionName: "mint",
+      functionArgs: [standardPrincipalCV(activeAcc), stringAsciiCV(`https://gateway.pinata.cloud/ipfs/${hash}`)],
+      appDetails: {
+        name: "Ignitus-NFT-Market",
+        icon: window.location.origin + "/favicon.ico"
+      },
+      onFinish: data => {
+        console.log(data);
+        toastSuccess("Mint success!")
+      }
+    }
+
+    await openContractCall(options);
   }
 
   async function proceedToMint(e) {
