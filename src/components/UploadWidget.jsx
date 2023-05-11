@@ -7,8 +7,8 @@ function UploadWidget({ nftDetails, setNftDetails }) {
     const [isReady, setisReady] = useState(false)
 
     useEffect(() => {
-        cloudinaryRef.current = window.cloudinary;
-        widgetRef.current = cloudinaryRef.current.createUploadWidget({
+        cloudinaryRef.current = window?.cloudinary;
+        widgetRef.current = cloudinaryRef.current?.createUploadWidget({
             cloudName: "dkgmmltqt",
             uploadPreset: "tyrb0jjy",
             resource_type: "video"

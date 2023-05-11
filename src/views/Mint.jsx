@@ -73,14 +73,14 @@ function Mint() {
       contractAddress: config.nftContract.address,
       contractName: config.nftContract.name,
       functionName: "mint",
-      functionArgs: [standardPrincipalCV(activeAcc), stringAsciiCV(`https://gateway.pinata.cloud/ipfs/${hash}`)],
+      functionArgs: [standardPrincipalCV(activeAcc), stringAsciiCV(hash)],
       appDetails: {
         name: "Ignitus-NFT-Market",
         icon: window.location.origin + "/favicon.ico"
       },
       onFinish: data => {
         console.log(data);
-        toastSuccess("Mint success!")
+        toastSuccess("Transaction sent for execution!")
       }
     }
 
@@ -92,7 +92,7 @@ function Mint() {
     if (!activeAcc) return toastError("Please connect your wallet to mint")
     if (mintType === "img") {
       const hash = await pinFileToIPFS(selectedFile)
-      mint(hash)
+      mint(`https://gateway.pinata.cloud/ipfs/${hash}`)
     }
     else if (mintType === "vid") {
       const id = getVideoId()
@@ -107,7 +107,7 @@ function Mint() {
     if (!videoNFTMetadata.uploaded) {
       return toastError("Please upload a video first")
     };
-    let uniqueId = videoNFTMetadata.url.replace("https://res.cloudinary.com/", "")
+    let uniqueId = videoNFTMetadata.url
     return uniqueId
   }
 

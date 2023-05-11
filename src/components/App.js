@@ -54,11 +54,16 @@ function App() {
     }
   }
 
+  async function disconnect(){
+    userSession.signUserOut()
+    setactiveAcc(null)
+  }
+
 
   return (
     <>
       <BrowserRouter>
-        <WalletContext.Provider value={{ activeAcc, connect }}>
+        <WalletContext.Provider value={{ activeAcc, connect, disconnect }}>
           <Header />
           <Routes>
             <Route path="/" Component={Home} />

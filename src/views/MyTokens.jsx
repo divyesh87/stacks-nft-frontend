@@ -5,7 +5,9 @@ import NFTCard from "../components/NFTCard"
 import { WalletContext } from '../components/Wallet'
 import { openContractCall } from "@stacks/connect"
 import config from "../stx/config.json"
-import { uintCV } from '@stacks/transactions'
+import { StacksTestnet } from "@stacks/network"
+import axios from 'axios'
+import { callReadOnlyFunction, makeContractCall, uintCV } from '@stacks/transactions'
 
 function MyTokens() {
 
@@ -13,24 +15,51 @@ function MyTokens() {
   const { activeAcc } = useContext(WalletContext)
 
   useEffect(() => {
-    const options = {
-      contractAddress: config.nftContract.address,
-      contractName: config.nftContract.name,
-      functionName: 'get-token-uri',
-      functionArgs: [uintCV(1)],
-      appDetails: {
-        name: 'My App',
-        icon: window.location.origin + '/my-app-logo.svg',
-      },
-      onFinish: data => {
-        console.log('Stacks Transaction:', data.stacksTransaction);
-        console.log('Transaction ID:', data.txId);
-        console.log('Raw transaction:', data.txRaw);
-      },
+
+
+    async function fetchNFTs() {
+      if (!activeAcc) return
+
+      const { data } = await axios.get(`https://api.testnet.hiro.so/extended/v1/tokens/nft/holdings?principal=${activeAcc}`)
+
+
+      const metadatas = data.results.map(async (nft) => {
+        const contractAddress = nft.asset_identifier.split("::")[0].split(".")[0]
+        const contractName = nft.asset_identifier.split("::")[0].split(".")[1]
+        const tokenId = parseInt(nft.value.repr.split("u")[1]);
+
+        const options = {
+          contractAddress,
+          contractName,
+          functionName: "get-token-uri",
+          functionArgs: [uintCV(tokenId)],
+          network: new StacksTestnet(),
+          senderAddress: activeAcc
+
+        }
+
+        const { value } = await callReadOnlyFunction(options)
+        const nftObj = {
+          token_uri: value.value.data,
+          symbol: "NFT",
+          token_id: tokenId
+        }
+        return nftObj
+
+      })
+
+      const settledPromises = await Promise.allSettled(metadatas);
+      const resolvedPromises = settledPromises.filter(
+        (promise) => promise.status === 'fulfilled'
+      );
+      const results = resolvedPromises.map((promise) => promise.value);
+
+      setnftMetadatas(results)
     }
 
 
-  }, [])
+    fetchNFTs()
+  }, [activeAcc])
 
 
 
