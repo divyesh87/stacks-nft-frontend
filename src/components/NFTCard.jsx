@@ -35,7 +35,6 @@ function DisplayNFT({ nft }) {
                                 <source src={nft.token_uri} />
                             </video>
                     }
-
                 </div>
                 <Typography style={{ color: "white" }}>
                     {nft.symbol} #{nft.token_id}

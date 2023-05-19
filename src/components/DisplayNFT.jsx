@@ -19,7 +19,6 @@ function DisplayNFT({ file, type }) {
                             <source src={URL.createObjectURL(file)} type={file.type} />
                         </video>
                 }
-
             </div>
         </Box>
     )

@@ -18,7 +18,6 @@ const OPTIONS = [
   { value: "vid", label: "Video metadata for playable NFTs" }
 ]
 
-
 function Mint() {
 
   const [imgBytes, setImgBytes] = useState(null)
@@ -30,15 +29,6 @@ function Mint() {
     url: null
   })
 
-
-  useEffect(() => {
-
-    async function loadContract() {
-
-    }
-    loadContract()
-
-  }, [])
 
   useEffect(() => {
     if (videoNFTMetadata.uploaded) {
@@ -54,7 +44,6 @@ function Mint() {
         setselectedFile(file)
         setmintType("img");
         const reader = new FileReader();
-
         reader.addEventListener("load", () => {
           setImgBytes(reader.result)
         })

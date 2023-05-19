@@ -4,15 +4,41 @@ import stxLogo from "../assets/images/stacksLogo.png"
 import ListedNFT from "../components/ListedNFT"
 import { Box, Typography } from '@material-ui/core'
 import { WalletContext } from '../components/Wallet'
-
+import config from "../stx/config.json"
+import { callReadOnlyFunction, createAddress ,uintCV } from '@stacks/transactions'
+import {StacksTestnet} from "@stacks/network"
 
 
 function Home() {
   const [nftMetadatas, setnftMetadatas] = useState([])
-  const {activeAcc} = useContext(WalletContext)
+  const { activeAcc } = useContext(WalletContext)
 
   useEffect(() => {
     async function loadAndFetchNFTS() {
+      let tempMetadata = [];
+      for (let i = 0; i < 10; i++) {
+        const options = {
+          contractAddress: config.marketContract.address,
+          contractName: config.marketContract.name,
+          functionName: "get-listing",
+          functionArgs: [uintCV(i)],
+          network: new StacksTestnet(),
+          senderAddress: activeAcc
+        }
+        const { value } = await callReadOnlyFunction(options)
+        if(!value) continue;
+        const data = value.data;
+        console.log(data);
+        const nft = {
+          price : Number(data.price.value),
+          seller : data.maker.address.hash160,
+          tokenId : Number(data["token-id"].value),
+          listingId : i
+        }
+        tempMetadata.push(nft);
+      }
+
+      setnftMetadatas(tempMetadata)
     }
     loadAndFetchNFTS()
   }, [activeAcc])

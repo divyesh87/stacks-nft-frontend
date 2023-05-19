@@ -17,7 +17,6 @@ async function isConnectedToBSC() {
 
 }
 
-
 async function switchToBSC() {
     if (!await isConnectedToBSC()) {
         try {

@@ -3,11 +3,9 @@ import styles from "../styles/MyTokens.module.css"
 import { Box, Typography } from '@material-ui/core'
 import NFTCard from "../components/NFTCard"
 import { WalletContext } from '../components/Wallet'
-import { openContractCall } from "@stacks/connect"
-import config from "../stx/config.json"
 import { StacksTestnet } from "@stacks/network"
 import axios from 'axios'
-import { callReadOnlyFunction, makeContractCall, uintCV } from '@stacks/transactions'
+import { callReadOnlyFunction, uintCV } from '@stacks/transactions'
 
 function MyTokens() {
 
@@ -16,18 +14,15 @@ function MyTokens() {
 
   useEffect(() => {
 
-
     async function fetchNFTs() {
       if (!activeAcc) return
 
       const { data } = await axios.get(`https://api.testnet.hiro.so/extended/v1/tokens/nft/holdings?principal=${activeAcc}`)
 
-
       const metadatas = data.results.map(async (nft) => {
         const contractAddress = nft.asset_identifier.split("::")[0].split(".")[0]
         const contractName = nft.asset_identifier.split("::")[0].split(".")[1]
         const tokenId = parseInt(nft.value.repr.split("u")[1]);
-
         const options = {
           contractAddress,
           contractName,
@@ -35,14 +30,14 @@ function MyTokens() {
           functionArgs: [uintCV(tokenId)],
           network: new StacksTestnet(),
           senderAddress: activeAcc
-
         }
 
         const { value } = await callReadOnlyFunction(options)
         const nftObj = {
           token_uri: value.value.data,
           symbol: "NFT",
-          token_id: tokenId
+          token_id: tokenId,
+          contractAddress : contractAddress + "." + contractName
         }
         return nftObj
 
@@ -53,15 +48,11 @@ function MyTokens() {
         (promise) => promise.status === 'fulfilled'
       );
       const results = resolvedPromises.map((promise) => promise.value);
-
       setnftMetadatas(results)
     }
 
-
     fetchNFTs()
   }, [activeAcc])
-
-
 
 
   return (
