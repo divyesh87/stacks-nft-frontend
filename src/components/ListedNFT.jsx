@@ -8,12 +8,13 @@ import { callReadOnlyFunction, contractPrincipalCV, createAddress, PostCondition
 import { StacksTestnet } from "@stacks/network"
 import { openContractCall } from '@stacks/connect'
 
+
 function ListedNFT({ nft }) {
     const [metadataType, setmetadataType] = useState(null)
     const videoRef = useRef(null)
     const [TxSuccess, setTxSuccess] = useState(false)
     const [nftMetadata, setnftMetadata] = useState({
-        price: nft.price / 10**6,
+        price: nft.price / 10 ** 6,
         seller: nft.seller,
         src: null,
         listingId: nft.listingId
@@ -23,7 +24,7 @@ function ListedNFT({ nft }) {
 
 
     useEffect(() => {
-        setnftMetadata({ ...nftMetadata, seller: nft.seller, price: nft.price / 10**6 })
+        setnftMetadata({ ...nftMetadata, seller: nft.seller, price: nft.price / 10 ** 6 })
         async function loadAndFetch() {
             async function fetchNFTImg() {
                 const options = {
@@ -35,6 +36,10 @@ function ListedNFT({ nft }) {
                     senderAddress: activeAcc
                 }
                 const { value } = await callReadOnlyFunction(options)
+                const src = value.value.data;
+                if (src.startsWith("https://res.cloudinary.com")) {
+                    setmetadataType("video")
+                }
                 setnftMetadata({ ...nftMetadata, src: value.value.data })
             }
             await fetchNFTImg()
