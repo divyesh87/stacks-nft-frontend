@@ -5,7 +5,7 @@ import ListedNFT from "../components/ListedNFT"
 import { Box, Typography } from '@material-ui/core'
 import { WalletContext } from '../components/Wallet'
 import config from "../stx/config.json"
-import { callReadOnlyFunction, createAddress ,uintCV } from '@stacks/transactions'
+import { callReadOnlyFunction, createAddress ,cvToString,uintCV } from '@stacks/transactions'
 import {StacksTestnet} from "@stacks/network"
 
 
@@ -28,10 +28,9 @@ function Home() {
         const { value } = await callReadOnlyFunction(options)
         if(!value) continue;
         const data = value.data;
-        console.log(data);
         const nft = {
           price : Number(data.price.value),
-          seller : data.maker.address.hash160,
+          seller : cvToString(data.maker),
           tokenId : Number(data["token-id"].value),
           listingId : i
         }

@@ -4,9 +4,9 @@ import styles from "../styles/Card.module.css"
 import stxLogo from "../assets/images/stacksLogo.png"
 import { WalletContext } from './Wallet'
 import config from "../stx/config.json"
-import { callReadOnlyFunction, contractPrincipalCV, createAddress, PostConditionMode, uintCV } from '@stacks/transactions'
+import { AnchorMode, callReadOnlyFunction, contractPrincipalCV, createAddress, PostConditionMode, uintCV } from '@stacks/transactions'
 import { StacksTestnet } from "@stacks/network"
-import { openContractCall } from '@stacks/connect'
+import { openContractCall, openSTXTransfer } from '@stacks/connect'
 
 
 function ListedNFT({ nft }) {
@@ -67,6 +67,16 @@ function ListedNFT({ nft }) {
     }
 
     async function playNFT() {
+        openSTXTransfer({
+            network : new StacksTestnet(),
+            anchorMode : AnchorMode.Any,
+            recipient : nft.seller,
+            amount : 1e6,
+            postConditionMode : PostConditionMode.Allow,
+            onFinish : () => {
+                setTxSuccess(true)
+            }
+        })
     }
 
     return (
