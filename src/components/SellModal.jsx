@@ -15,7 +15,6 @@ function SellModal({ nft, showModal, handleModal }) {
     const contractAddress = nft.contractAddress.split(".")[0]
     const contractName = nft.contractAddress.split(".")[1];
 
-    console.log(nft);
     async function sellNFT() {
 
         const options = {

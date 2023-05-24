@@ -7,7 +7,7 @@ import config from "../stx/config.json"
 import { AnchorMode, callReadOnlyFunction, contractPrincipalCV, createAddress, PostConditionMode, uintCV } from '@stacks/transactions'
 import { StacksTestnet } from "@stacks/network"
 import { openContractCall, openSTXTransfer } from '@stacks/connect'
-
+import ImageLoader from "./ImageLoader"
 
 function ListedNFT({ nft }) {
     const [metadataType, setmetadataType] = useState(null)
@@ -27,6 +27,7 @@ function ListedNFT({ nft }) {
         setnftMetadata({ ...nftMetadata, seller: nft.seller, price: nft.price / 10 ** 6 })
         async function loadAndFetch() {
             async function fetchNFTImg() {
+                console.log(nft);
                 const options = {
                     contractAddress: config.nftContract.address,
                     contractName: config.nftContract.name,
@@ -36,6 +37,7 @@ function ListedNFT({ nft }) {
                     senderAddress: activeAcc
                 }
                 const { value } = await callReadOnlyFunction(options)
+                console.log(value);
                 const src = value.value.data;
                 if (src.startsWith("https://res.cloudinary.com")) {
                     setmetadataType("video")
@@ -88,7 +90,8 @@ function ListedNFT({ nft }) {
                         <source src={nftMetadata.src} />
                     </video>
                     :
-                    <img style={{ height: "30vh" }} src={nftMetadata.src} />
+                    <ImageLoader src={nftMetadata.src} />
+                 
                 }
             </div>
             <div>

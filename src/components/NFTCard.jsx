@@ -5,6 +5,7 @@ import ImageLoader from './ImageLoader'
 import SellModal from './SellModal'
 
 function DisplayNFT({ nft }) {
+    console.log(nft);
 
     const [Modal, setModal] = useState(false)
     const [metadataType, setmetadataType] = useState(null)

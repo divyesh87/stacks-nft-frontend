@@ -16,7 +16,7 @@ function ImageLoader({ src }) {
 
     return (
         <div>
-            <img src={isError ? failedLogo : src} onLoad={handleLoad} onError={handleError} style={{ display: imgLoaded ? null : "none", maxHeight: "30vh", maxWidth: "35vw" }} />
+            <img src={isError ? failedLogo : src} onLoad={handleLoad} onError={handleError} style={{ display: imgLoaded ? null : "none", maxHeight: "30vh", maxWidth: "35vw", minHeight : "10vh" }} />
             {
                 isError &&
                 <div style={{display : "flex" , justifyContent : "center"}}>
