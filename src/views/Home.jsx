@@ -16,7 +16,7 @@ function Home() {
   useEffect(() => {
     async function loadAndFetchNFTS() {
       let tempMetadata = [];
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 15; i++) {
         const options = {
           contractAddress: config.marketContract.address,
           contractName: config.marketContract.name,
@@ -51,7 +51,7 @@ function Home() {
             <hr style={{ width: "100%" }} />
           </Typography>
           <Typography style={{ color: "white" }} variant="h5">
-            Explore, discover and own unique digital assets on our NFT marketplace, where creativity meets blockchain technology. Buy, sell and showcase one-of-a-kind collectibles, art, music and more, securely and transparently. Join the revolution of ownership in the digital age.
+            Explore, discover and own unique digital assets on our Ordinals marketplace, where creativity meets blockchain technology. Buy, sell and showcase one-of-a-kind collectibles, art, music and more, securely and transparently. Join the revolution of ownership in the digital age.
           </Typography>
         </div>
         <div className={styles.logoContainer}>

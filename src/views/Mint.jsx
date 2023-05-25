@@ -15,7 +15,7 @@ import config from "../stx/config.json"
 
 const OPTIONS = [
   { value: "img", label: "Standard Image Metadata" },
-  { value: "vid", label: "Video metadata for playable NFTs" }
+  { value: "vid", label: "Video metadata for playable Ordinals" }
 ]
 
 function Mint() {
@@ -64,7 +64,7 @@ function Mint() {
       functionName: "mint",
       functionArgs: [standardPrincipalCV(activeAcc), stringAsciiCV(hash)],
       appDetails: {
-        name: "Ignitus-NFT-Market",
+        name: "Ignitus-Ordinals-Market",
         icon: window.location.origin + "/favicon.ico"
       },
       onFinish: data => {
@@ -105,16 +105,16 @@ function Mint() {
       <Box className={styles.mintPageContainer}>
         <div>
           <Typography variant='h4' style={{ color: "white" }}>
-            Create Your Own Digital Legacy with our NFT Minting Service
+            Create Your Own Digital Legacy with our Ordinal Minting Service
           </Typography>
           <Typography variant='subtitle1' style={{ color: "white" }}>
-            All of your NFT files, including metadata and assets, are stored on the decentralized Pinata IPFS network. This means that your NFTs are safe from censorship and single points of failure.
+            All of your Ordinal files, including metadata and assets, are stored on the decentralized Pinata IPFS network. This means that your NFTs are safe from censorship and single points of failure.
           </Typography>
           <hr style={{ color: "white" }} />
         </div>
         {mintType === null && <label htmlFor="type">
           <Typography variant='h6' style={{ color: "white" }}>
-            Select the type of Metadata to be associated with your NFT
+            Select the type of Metadata to be associated with your Ordinal
           </Typography>
         </label>}
         <Select id="type" onChange={(e) => setmintType(e.value)} options={OPTIONS} />

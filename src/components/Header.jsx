@@ -28,7 +28,7 @@ function Header() {
                             <Typography>Mint</Typography>
                         </Link>
                         <Link style={{ color: "white", marginLeft: "5rem" }} to="/mytokens">
-                            <Typography>My Tokens</Typography>
+                            <Typography>My Ordinals</Typography>
                         </Link>
                     </div>
                     <Button onClick={activeAcc ? disconnect : connect} className={styles.walletBtn} variant='outlined' style={{ color: "white", border: "0.1rem solid white" }}>
