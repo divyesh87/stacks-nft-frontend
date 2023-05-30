@@ -10,7 +10,7 @@ import UploadWidget from '../components/UploadWidget'
 import { pinFileToIPFS } from "../helpers/mintEssentials.js"
 import { toastInfo, toastSuccess, toastError } from "../helpers/Toast"
 import { openContractCall } from "@stacks/connect"
-import { standardPrincipalCV, stringAsciiCV } from "@stacks/transactions";
+import { PostConditionMode, standardPrincipalCV, stringAsciiCV } from "@stacks/transactions";
 import config from "../stx/config.json"
 
 const OPTIONS = [
@@ -63,6 +63,7 @@ function Mint() {
       contractName: config.nftContract.name,
       functionName: "mint",
       functionArgs: [standardPrincipalCV(activeAcc), stringAsciiCV(hash)],
+      postConditionMode : PostConditionMode.Allow,
       appDetails: {
         name: "Ignitus-Ordinals-Market",
         icon: window.location.origin + "/favicon.ico"
@@ -108,7 +109,7 @@ function Mint() {
             Create Your Own Digital Legacy with our Ordinal Minting Service
           </Typography>
           <Typography variant='subtitle1' style={{ color: "white" }}>
-            All of your Ordinal files, including metadata and assets, are stored on the decentralized Pinata IPFS network. This means that your NFTs are safe from censorship and single points of failure.
+            All of your Ordinal files, including metadata and assets, are stored on the decentralized Pinata IPFS network. This means that your Ordinals are safe from censorship and single points of failure.
           </Typography>
           <hr style={{ color: "white" }} />
         </div>
